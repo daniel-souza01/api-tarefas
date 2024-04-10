@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -43,9 +45,11 @@ public class Task {
 	@Column(nullable = true, name = "removed_at")
 	private LocalDateTime removedAt;
 
+	@UpdateTimestamp
 	@Column(nullable = false, name = "updated_at")
 	private LocalDateTime updatedAt;
 
+	@CreationTimestamp
 	@Column(nullable = false, name = "created_at")
 	private LocalDateTime createdAt;
 }
