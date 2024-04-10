@@ -3,6 +3,7 @@ package com.api.tarefas.modules.user.controllers;
 import com.api.tarefas.modules.user.dto.CreateUserDTO;
 import com.api.tarefas.modules.user.dto.CreateUserResponseDTO;
 import com.api.tarefas.modules.user.useCases.CreateUserUseCase;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,7 @@ public class UserController {
 	private final CreateUserUseCase createUserUseCase;
 
 	@PostMapping
-	public ResponseEntity<CreateUserResponseDTO> createUser(@RequestBody CreateUserDTO body, UriComponentsBuilder uriComponentsBuilder) {
+	public ResponseEntity<CreateUserResponseDTO> createUser(@Valid @RequestBody CreateUserDTO body, UriComponentsBuilder uriComponentsBuilder) {
 		CreateUserResponseDTO result = this.createUserUseCase.execute(body);
 
 		var uri = uriComponentsBuilder.path("/users/{id}").buildAndExpand(result.userId()).toUri();
