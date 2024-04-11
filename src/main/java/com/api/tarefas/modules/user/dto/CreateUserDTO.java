@@ -1,11 +1,11 @@
 package com.api.tarefas.modules.user.dto;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
 
 public record CreateUserDTO(
-		@NotEmpty(message = "O nome é obrigatório")
+		@NotBlank(message = "O nome é obrigatório")
 		String name,
 
 		@Email(message = "O e-mail deve ser válido")

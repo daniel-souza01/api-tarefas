@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CreateTaskListUseCase {
-	final UserRepository userRepository;
-	final TaskListRepository taskListRepository;
+	private final UserRepository userRepository;
+	private final TaskListRepository taskListRepository;
 
 	public CreateTaskListResponseDTO execute(CreateTaskListDTO taskList) {
 		User user = this.userRepository.findById(taskList.userId()).orElseThrow(() -> new UserNotFoundException(taskList.userId()));
