@@ -17,4 +17,9 @@ public class TaskListExceptionHandler {
 	public ResponseEntity<ErrorResponseDTO> handleTaskListNotFound(TaskListNotFoundException exception) {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDTO(exception.getMessage()));
 	}
+
+	@ExceptionHandler(TaskNotFoundException.class)
+	public ResponseEntity<ErrorResponseDTO> handleTaskNotFound(TaskNotFoundException exception) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDTO(exception.getMessage()));
+	}
 }
