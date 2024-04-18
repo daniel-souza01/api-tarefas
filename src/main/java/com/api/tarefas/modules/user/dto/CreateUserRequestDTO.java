@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
 
-public record CreateUserDTO(
+public record CreateUserRequestDTO(
 		@NotBlank(message = "O nome é obrigatório")
 		String name,
 

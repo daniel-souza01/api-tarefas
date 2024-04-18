@@ -1,4 +1,4 @@
-package com.api.tarefas.modules.user.Exceptions;
+package com.api.tarefas.modules.user.exceptions;
 
 public class UserAlreadyExistsException extends RuntimeException {
 	public UserAlreadyExistsException() {

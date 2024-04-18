@@ -7,7 +7,7 @@ import com.api.tarefas.modules.task.entities.TaskList;
 import com.api.tarefas.modules.task.exceptions.TaskListNotFoundException;
 import com.api.tarefas.modules.task.repositories.TaskListRepository;
 import com.api.tarefas.modules.task.repositories.TaskRepository;
-import com.api.tarefas.modules.user.Exceptions.UserNotFoundException;
+import com.api.tarefas.modules.user.exceptions.UserNotFoundException;
 import com.api.tarefas.modules.user.entities.User;
 import com.api.tarefas.modules.user.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,10 +1,9 @@
 package com.api.tarefas.modules.user.controllers;
 
-import com.api.tarefas.modules.user.dto.CreateUserDTO;
+import com.api.tarefas.modules.user.dto.CreateUserRequestDTO;
 import com.api.tarefas.modules.user.dto.CreateUserResponseDTO;
-import com.api.tarefas.modules.user.dto.GetUserResponseDTO;
-import com.api.tarefas.modules.user.useCases.CreateUserUseCase;
-import com.api.tarefas.modules.user.useCases.GetUserUseCase;
+import com.api.tarefas.modules.user.dto.UserResponseDTO;
+import com.api.tarefas.modules.user.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +14,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
-	private final CreateUserUseCase createUserUseCase;
-	private final GetUserUseCase getUserUseCase;
+	private final UserService userService;
 
 	@PostMapping
-	public ResponseEntity<CreateUserResponseDTO> createUser(@Valid @RequestBody CreateUserDTO body, UriComponentsBuilder uriComponentsBuilder) {
-		CreateUserResponseDTO result = this.createUserUseCase.execute(body);
+	public ResponseEntity<CreateUserResponseDTO> createUser(@Valid @RequestBody CreateUserRequestDTO body, UriComponentsBuilder uriComponentsBuilder) {
+		var result = this.userService.createUser(body);
 
 		var uri = uriComponentsBuilder.path("/users/{id}").buildAndExpand(result.userId()).toUri();
 
@@ -28,8 +26,8 @@ public class UserController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<GetUserResponseDTO> getUser(@PathVariable String id) {
-		GetUserResponseDTO result = this.getUserUseCase.execute(id);
+	public ResponseEntity<UserResponseDTO> getUser(@PathVariable String id) {
+		var result = this.userService.getUserDetails(id);
 		return ResponseEntity.ok(result);
 	}
 }
