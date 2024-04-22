@@ -1,10 +1,9 @@
 package com.api.tarefas.modules.task.controllers;
 
-import com.api.tarefas.modules.task.UseCases.CreateTaskUseCase;
-import com.api.tarefas.modules.task.UseCases.GetTaskUseCase;
 import com.api.tarefas.modules.task.dto.CreateTaskRequestDTO;
 import com.api.tarefas.modules.task.dto.CreateTaskResponseDTO;
-import com.api.tarefas.modules.task.dto.GetTaskResponseDTO;
+import com.api.tarefas.modules.task.dto.TaskResponseDTO;
+import com.api.tarefas.modules.task.services.TaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +14,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequestMapping("/tasks")
 @RequiredArgsConstructor
 public class TaskController {
-	private final CreateTaskUseCase createTaskUseCase;
-	private final GetTaskUseCase getTaskUseCase;
+	private final TaskService taskService;
 
 	@PostMapping
 	public ResponseEntity<CreateTaskResponseDTO> createTask(@Valid @RequestBody CreateTaskRequestDTO body, UriComponentsBuilder uriComponentsBuilder) {
-		CreateTaskResponseDTO result = this.createTaskUseCase.execute(body);
+		var result = this.taskService.createTask(body);
 
 		var uri = uriComponentsBuilder.path("/tasks/{id}").buildAndExpand(result.taskId()).toUri();
 
@@ -28,8 +26,8 @@ public class TaskController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<GetTaskResponseDTO> getTask(@PathVariable String id) {
-		GetTaskResponseDTO result = this.getTaskUseCase.execute(id);
+	public ResponseEntity<TaskResponseDTO> getTask(@PathVariable String id) {
+		var result = this.taskService.getTaskDetails(id);
 		return ResponseEntity.ok(result);
 	}
 

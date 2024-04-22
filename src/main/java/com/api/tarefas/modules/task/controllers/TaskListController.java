@@ -1,11 +1,6 @@
 package com.api.tarefas.modules.task.controllers;
 
-import com.api.tarefas.modules.task.UseCases.CreateTaskListUseCase;
-import com.api.tarefas.modules.task.UseCases.GetTaskListUseCase;
-import com.api.tarefas.modules.task.dto.CreateTaskListDTO;
-import com.api.tarefas.modules.task.dto.CreateTaskListResponseDTO;
-import com.api.tarefas.modules.task.dto.GetTaskListResponseDTO;
-import com.api.tarefas.modules.task.dto.TaskListWithTasksDTO;
+import com.api.tarefas.modules.task.dto.*;
 import com.api.tarefas.modules.task.services.TaskListService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,13 +14,11 @@ import java.util.List;
 @RequestMapping("/tasks/task-list")
 @RequiredArgsConstructor
 public class TaskListController {
-	private final CreateTaskListUseCase createTaskListUseCase;
-	private final GetTaskListUseCase getTaskListUseCase;
 	private final TaskListService taskListService;
 
 	@PostMapping
-	public ResponseEntity<CreateTaskListResponseDTO> createTaskList(@Valid @RequestBody CreateTaskListDTO body, UriComponentsBuilder uriComponentsBuilder) {
-		CreateTaskListResponseDTO result = this.createTaskListUseCase.execute(body);
+	public ResponseEntity<CreateTaskListResponseDTO> createTaskList(@Valid @RequestBody CreateTaskListRequestDTO body, UriComponentsBuilder uriComponentsBuilder) {
+		var result = this.taskListService.createTaskList(body);
 
 		var uri = uriComponentsBuilder.path("/tasks/task-list/{id}").buildAndExpand(result.taskListId()).toUri();
 
@@ -33,8 +26,8 @@ public class TaskListController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<GetTaskListResponseDTO> getTaskList(@PathVariable String id) {
-		GetTaskListResponseDTO result = this.getTaskListUseCase.execute(id);
+	public ResponseEntity<TaskListResponseDTO> getTaskList(@PathVariable String id) {
+		var result = this.taskListService.getTaskListDetails(id);
 		return ResponseEntity.ok(result);
 	}
 
