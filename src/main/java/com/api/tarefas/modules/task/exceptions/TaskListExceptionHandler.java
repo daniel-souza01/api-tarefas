@@ -22,4 +22,9 @@ public class TaskListExceptionHandler {
 	public ResponseEntity<ErrorResponseDTO> handleTaskListNotBelongToUser(TaskListNotBelongToUserException exception) {
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponseDTO(exception.getMessage()));
 	}
+
+	@ExceptionHandler(TaskListAlreadyRemovedException.class)
+	public ResponseEntity<ErrorResponseDTO> handleTaskListAlreadyRemoved(TaskListAlreadyRemovedException exception) {
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDTO(exception.getMessage()));
+	}
 }

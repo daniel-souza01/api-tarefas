@@ -42,4 +42,10 @@ public class TaskListController {
 		this.taskListService.updateTaskList(body);
 		return ResponseEntity.ok().build();
 	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> removeTaskList(@PathVariable String id) {
+		this.taskListService.removeTaskList(id);
+		return ResponseEntity.ok().build();
+	}
 }

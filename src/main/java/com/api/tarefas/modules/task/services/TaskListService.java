@@ -2,6 +2,7 @@ package com.api.tarefas.modules.task.services;
 
 import com.api.tarefas.modules.task.dto.*;
 import com.api.tarefas.modules.task.entities.TaskList;
+import com.api.tarefas.modules.task.exceptions.TaskListAlreadyRemovedException;
 import com.api.tarefas.modules.task.exceptions.TaskListNotFoundException;
 import com.api.tarefas.modules.task.repositories.TaskListRepository;
 import com.api.tarefas.modules.user.entities.User;
@@ -9,6 +10,7 @@ import com.api.tarefas.modules.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -82,6 +84,18 @@ public class TaskListService {
 	public void updateTaskList(UpdateTaskListRequestDTO data) {
 		TaskList taskList = this.getTaskListById(data.taskListId());
 		taskList.setTitle(data.title());
+		this.taskListRepository.save(taskList);
+		return;
+	}
+
+	public void removeTaskList(String taskListId) {
+		TaskList taskList = this.getTaskListById(taskListId);
+
+		if (taskList.getRemovedAt() != null) {
+			throw new TaskListAlreadyRemovedException();
+		}
+
+		taskList.setRemovedAt(LocalDateTime.now());
 		this.taskListRepository.save(taskList);
 		return;
 	}
