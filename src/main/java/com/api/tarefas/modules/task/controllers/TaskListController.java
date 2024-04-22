@@ -36,4 +36,10 @@ public class TaskListController {
 		var result = this.taskListService.getAllWithTasks(userId);
 		return ResponseEntity.ok(result);
 	}
+
+	@PatchMapping
+	public ResponseEntity<Void> updateTaskList(@Valid @RequestBody UpdateTaskListRequestDTO body) {
+		this.taskListService.updateTaskList(body);
+		return ResponseEntity.ok().build();
+	}
 }

@@ -78,4 +78,11 @@ public class TaskListService {
 
 		return new CreateTaskListResponseDTO(newTaskList.getId());
 	}
+
+	public void updateTaskList(UpdateTaskListRequestDTO data) {
+		TaskList taskList = this.getTaskListById(data.taskListId());
+		taskList.setTitle(data.title());
+		this.taskListRepository.save(taskList);
+		return;
+	}
 }
