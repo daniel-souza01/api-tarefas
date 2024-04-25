@@ -1,5 +1,6 @@
 package com.api.tarefas.modules.task.dto;
 
+import com.api.tarefas.utils.Patterns;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDateTime;
@@ -13,10 +14,10 @@ public record CreateTaskRequestDTO(
 
 		@NotBlank(message = "O título é obrigatório")
 		String title,
-		
+
 		LocalDateTime date,
 
-		@Pattern(regexp = "^true$|^false$", message = "Deve ser true ou false")
+		@Pattern(regexp = Patterns.Boolean, message = "Deve ser true ou false")
 		String isFavorite
 ) {
 }

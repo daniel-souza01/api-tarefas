@@ -3,6 +3,7 @@ package com.api.tarefas.modules.task.controllers;
 import com.api.tarefas.modules.task.dto.CreateTaskRequestDTO;
 import com.api.tarefas.modules.task.dto.CreateTaskResponseDTO;
 import com.api.tarefas.modules.task.dto.TaskResponseDTO;
+import com.api.tarefas.modules.task.dto.UpdateTaskRequestDTO;
 import com.api.tarefas.modules.task.services.TaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,4 +32,9 @@ public class TaskController {
 		return ResponseEntity.ok(result);
 	}
 
+	@PutMapping
+	public ResponseEntity<Void> updateTask(@Valid @RequestBody UpdateTaskRequestDTO body) {
+		this.taskService.updateTask(body);
+		return ResponseEntity.ok().build();
+	}
 }

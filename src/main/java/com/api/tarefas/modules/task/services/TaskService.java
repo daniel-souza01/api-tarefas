@@ -3,6 +3,7 @@ package com.api.tarefas.modules.task.services;
 import com.api.tarefas.modules.task.dto.CreateTaskRequestDTO;
 import com.api.tarefas.modules.task.dto.CreateTaskResponseDTO;
 import com.api.tarefas.modules.task.dto.TaskResponseDTO;
+import com.api.tarefas.modules.task.dto.UpdateTaskRequestDTO;
 import com.api.tarefas.modules.task.entities.Task;
 import com.api.tarefas.modules.task.entities.TaskList;
 import com.api.tarefas.modules.task.exceptions.TaskListNotBelongToUserException;
@@ -66,5 +67,20 @@ public class TaskService {
 		this.taskRepository.save(newTask);
 
 		return new CreateTaskResponseDTO(newTask.getId());
+	}
+
+	public void updateTask(UpdateTaskRequestDTO data) {
+		Task task = this.getTaskById(data.taskId());
+
+		if (data.title() != null && !data.title().isBlank()) task.setTitle(data.title());
+
+		if (data.isFavorite() != null && !data.isFavorite().isEmpty())
+			task.setIsFavorite(Boolean.valueOf(data.isFavorite()));
+		
+		if (data.date() != null) task.setDate(data.date());
+		if (data.completedAt() != null) task.setCompletedAt(data.completedAt());
+
+		this.taskRepository.save(task);
+		return;
 	}
 }
