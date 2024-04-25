@@ -6,6 +6,7 @@ import com.api.tarefas.modules.task.dto.TaskResponseDTO;
 import com.api.tarefas.modules.task.dto.UpdateTaskRequestDTO;
 import com.api.tarefas.modules.task.entities.Task;
 import com.api.tarefas.modules.task.entities.TaskList;
+import com.api.tarefas.modules.task.exceptions.TaskAlreadyRemovedException;
 import com.api.tarefas.modules.task.exceptions.TaskListNotBelongToUserException;
 import com.api.tarefas.modules.task.exceptions.TaskNotFoundException;
 import com.api.tarefas.modules.task.repositories.TaskRepository;
@@ -14,6 +15,7 @@ import com.api.tarefas.modules.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -76,10 +78,22 @@ public class TaskService {
 
 		if (data.isFavorite() != null && !data.isFavorite().isEmpty())
 			task.setIsFavorite(Boolean.valueOf(data.isFavorite()));
-		
+
 		if (data.date() != null) task.setDate(data.date());
 		if (data.completedAt() != null) task.setCompletedAt(data.completedAt());
 
+		this.taskRepository.save(task);
+		return;
+	}
+
+	public void removeTask(String taskId) {
+		Task task = this.getTaskById(taskId);
+
+		if (task.getRemovedAt() != null) {
+			throw new TaskAlreadyRemovedException();
+		}
+
+		task.setRemovedAt(LocalDateTime.now());
 		this.taskRepository.save(task);
 		return;
 	}

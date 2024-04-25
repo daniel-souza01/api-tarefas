@@ -27,4 +27,9 @@ public class TaskListExceptionHandler {
 	public ResponseEntity<ErrorResponseDTO> handleTaskListAlreadyRemoved(TaskListAlreadyRemovedException exception) {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDTO(exception.getMessage()));
 	}
+
+	@ExceptionHandler(TaskAlreadyRemovedException.class)
+	public ResponseEntity<ErrorResponseDTO> handleTaskAlreadyRemoved(TaskAlreadyRemovedException exception) {
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDTO(exception.getMessage()));
+	}
 }
