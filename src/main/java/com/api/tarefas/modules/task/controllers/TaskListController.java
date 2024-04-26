@@ -37,9 +37,9 @@ public class TaskListController {
 		return ResponseEntity.ok(result);
 	}
 
-	@PatchMapping
-	public ResponseEntity<Void> updateTaskList(@Valid @RequestBody UpdateTaskListRequestDTO body) {
-		this.taskListService.updateTaskList(body);
+	@PatchMapping("/{id}")
+	public ResponseEntity<Void> updateTaskList(@PathVariable String id, @Valid @RequestBody UpdateTaskListRequestDTO body) {
+		this.taskListService.updateTaskList(id, body);
 		return ResponseEntity.ok().build();
 	}
 

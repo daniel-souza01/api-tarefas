@@ -71,8 +71,8 @@ public class TaskService {
 		return new CreateTaskResponseDTO(newTask.getId());
 	}
 
-	public void updateTask(UpdateTaskRequestDTO data) {
-		Task task = this.getTaskById(data.taskId());
+	public void updateTask(String taskId, UpdateTaskRequestDTO data) {
+		Task task = this.getTaskById(taskId);
 
 		if (data.title() != null && !data.title().isBlank()) task.setTitle(data.title());
 
