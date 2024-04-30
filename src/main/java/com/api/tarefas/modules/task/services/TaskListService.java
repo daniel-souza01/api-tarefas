@@ -13,7 +13,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 public class TaskListService {
@@ -38,37 +37,6 @@ public class TaskListService {
 				taskList.getUpdatedAt(),
 				taskList.getCreatedAt()
 		);
-	}
-
-	public List<TaskListWithTasksDTO> getAllWithTasks(String userId) {
-		User user = this.userService.getUserById(userId);
-
-		return this.taskListRepository.findByUserId(user.getId()).stream().map(taskList -> {
-			List<TaskResponseDTO> tasks = this.taskService.getAllByTaskListId(taskList.getId()).stream().map(task -> {
-				return new TaskResponseDTO(
-						task.getId(),
-						task.getUser().getId(),
-						task.getTaskList().getId(),
-						task.getTitle(),
-						task.getDate(),
-						task.getIsFavorite(),
-						task.getCompletedAt(),
-						task.getRemovedAt(),
-						task.getUpdatedAt(),
-						task.getCreatedAt()
-				);
-			}).toList();
-
-			return new TaskListWithTasksDTO(
-					taskList.getId(),
-					taskList.getUser().getId(),
-					taskList.getTitle(),
-					taskList.getRemovedAt(),
-					taskList.getUpdatedAt(),
-					taskList.getCreatedAt(),
-					tasks
-			);
-		}).toList();
 	}
 
 	public CreateTaskListResponseDTO createTaskList(CreateTaskListRequestDTO taskList) {

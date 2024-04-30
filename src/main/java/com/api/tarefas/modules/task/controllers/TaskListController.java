@@ -13,7 +13,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/tasks/task-list")
@@ -34,12 +33,6 @@ public class TaskListController {
 	@GetMapping("/{id}")
 	public ResponseEntity<TaskListResponseDTO> getTaskList(@PathVariable String id) {
 		var result = this.taskListService.getTaskListDetails(id);
-		return ResponseEntity.ok(result);
-	}
-
-	@GetMapping("/all-with-tasks/{userId}")
-	public ResponseEntity<List<TaskListWithTasksDTO>> getAllWithTasks(@PathVariable String userId) {
-		var result = this.taskListService.getAllWithTasks(userId);
 		return ResponseEntity.ok(result);
 	}
 
