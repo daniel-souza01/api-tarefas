@@ -1,5 +1,6 @@
 package com.api.tarefas.config;
 
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -17,5 +18,10 @@ public class GeneralExceptionHandler {
 		}).toList();
 
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(fieldErrors);
+	}
+
+	@ExceptionHandler(ConstraintViolationException.class)
+	public ResponseEntity handleConstraintViolation(ConstraintViolationException exception) {
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDTO(exception.getMessage()));
 	}
 }

@@ -2,9 +2,14 @@ package com.api.tarefas.modules.task.controllers;
 
 import com.api.tarefas.modules.task.dto.*;
 import com.api.tarefas.modules.task.services.TaskListService;
+import com.api.tarefas.utils.Patterns;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -13,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/tasks/task-list")
 @RequiredArgsConstructor
+@Validated
 public class TaskListController {
 	private final TaskListService taskListService;
 
@@ -47,5 +53,22 @@ public class TaskListController {
 	public ResponseEntity<Void> removeTaskList(@PathVariable String id) {
 		this.taskListService.removeTaskList(id);
 		return ResponseEntity.ok().build();
+	}
+
+	@GetMapping("/all/{userId}")
+	public ResponseEntity<ListTaskListsResponseDTO> listTaskLists(
+			@PathVariable String userId,
+			@RequestParam(name = "page", required = false, defaultValue = "0") @PositiveOrZero Integer page,
+			@RequestParam(name = "size", required = false, defaultValue = "10") @Positive Integer size,
+
+			@RequestParam(name = "sort_by", required = false, defaultValue = "createdAt")
+			@Pattern(regexp = Patterns.ListTaskListsSortBy, message = "Deve corresponder a title, removedAt, updatedAt ou createdAt") String sortBy,
+
+			@RequestParam(name = "sort_dir", required = false, defaultValue = "asc")
+			@Pattern(regexp = Patterns.SortDir, message = "Deve corresponder a asc ou desc") String sortDir
+	) {
+		var result = this.taskListService.listTaskLists(userId, new ListTaskListsQueryParams(page, size, sortBy, sortDir));
+
+		return ResponseEntity.ok(result);
 	}
 }

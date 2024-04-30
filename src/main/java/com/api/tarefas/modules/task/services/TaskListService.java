@@ -8,6 +8,8 @@ import com.api.tarefas.modules.task.repositories.TaskListRepository;
 import com.api.tarefas.modules.user.entities.User;
 import com.api.tarefas.modules.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -98,5 +100,26 @@ public class TaskListService {
 		taskList.setRemovedAt(LocalDateTime.now());
 		this.taskListRepository.save(taskList);
 		return;
+	}
+
+	public ListTaskListsResponseDTO listTaskLists(String userId, ListTaskListsQueryParams queryParams) {
+		User user = this.userService.getUserById(userId);
+
+		var direction = queryParams.sortDir().equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
+
+		var taskLists = this.taskListRepository
+				.getByUserId(user.getId(), PageRequest.of(queryParams.page(), queryParams.size(), direction, queryParams.sortBy()))
+				.stream().map(taskList -> new TaskListResponseDTO(
+						taskList.getId(),
+						taskList.getUser().getId(),
+						taskList.getTitle(),
+						taskList.getRemovedAt(),
+						taskList.getUpdatedAt(),
+						taskList.getCreatedAt()
+				)).toList();
+
+		var totalTaskLists = this.taskListRepository.countByUserId(user.getId());
+
+		return new ListTaskListsResponseDTO(totalTaskLists, taskLists);
 	}
 }
