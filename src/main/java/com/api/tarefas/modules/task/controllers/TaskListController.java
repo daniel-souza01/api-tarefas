@@ -48,7 +48,7 @@ public class TaskListController {
 		return ResponseEntity.ok().build();
 	}
 
-	@GetMapping("/all/{userId}")
+	@GetMapping("/list/{userId}")
 	public ResponseEntity<ListTaskListsResponseDTO> listTaskLists(
 			@PathVariable String userId,
 			@RequestParam(name = "page", required = false, defaultValue = "0") @PositiveOrZero Integer page,
